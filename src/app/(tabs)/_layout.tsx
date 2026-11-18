@@ -2,10 +2,7 @@ import { NativeTabs } from 'expo-router/native-tabs';
 
 import { cores } from '@/constants/tema';
 
-/**
- * Navegador 2: abas nativas na parte de baixo da tela.
- * `sf` é o ícone usado no iPhone (SF Symbols) e `md` o do Android (Material Symbols).
- */
+// Abas de baixo. sf = ícone do iPhone, md = do Android
 export default function TabsLayout() {
   return (
     <NativeTabs

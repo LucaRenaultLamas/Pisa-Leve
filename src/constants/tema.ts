@@ -1,16 +1,20 @@
 export const cores = {
-  fundo: '#EEF4EC', // fundo das telas
-  superficie: '#FFFFFF', // cartões, campos, barra de abas
-  primaria: '#173F2E', // botões principais, títulos
-  primariaMedia: '#2B6A4B', // links, bordas de item selecionado
-  selecionado: '#DCEBD6', // fundo de item selecionado
-  borda: '#D6E2D2', // bordas suaves
-  bordaForte: '#9DB3A3', // borda de checkbox desmarcado
-  texto: '#14261C', // texto principal
-  textoSecundario: '#4D6155', // textos de apoio
+  fundo: '#EEF4EC',
+  superficie: '#FFFFFF',
+  primaria: '#173F2E',
+  primariaMedia: '#2B6A4B',
+  selecionado: '#DCEBD6',
+  borda: '#D6E2D2',
+  bordaForte: '#9DB3A3',
+  texto: '#14261C',
+  textoSecundario: '#4D6155',
+  erro: '#B3261E',
+  erroFundo: '#FBE9E7',
+  erroBorda: '#E7B7B1',
+  erroTexto: '#8C1D18',
+  primariaClara: '#5E8F74',
 } as const;
 
-/** Nomes das fontes carregadas no src/app/_layout.tsx. */
 export const fontes = {
   regular: 'Inter_400Regular',
   media: 'Inter_500Medium',
@@ -32,5 +36,7 @@ export const espacos = {
 export const raios = {
   sm: 8,
   md: 12,
+  campo: 14,
   lg: 16,
+  folha: 28,
 } as const;

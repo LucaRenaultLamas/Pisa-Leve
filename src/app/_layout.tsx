@@ -12,11 +12,21 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { cores } from '@/constants/tema';
+import { SessaoProvider, useSessao } from '@/contexts/sessao';
 
-// Mantém a splash na tela até as fontes carregarem.
+// Segura a splash até carregar as fontes e o login salvo
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  return (
+    <SessaoProvider>
+      <NavegadorRaiz />
+    </SessaoProvider>
+  );
+}
+
+function NavegadorRaiz() {
+  const { usuario, carregando } = useSessao();
   const [fontesCarregadas, erroFontes] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -26,15 +36,17 @@ export default function RootLayout() {
     SpaceMono_700Bold,
   });
 
-  useEffect(() => {
-    if (fontesCarregadas || erroFontes) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontesCarregadas, erroFontes]);
+  const pronto = (fontesCarregadas || !!erroFontes) && !carregando;
 
-  if (!fontesCarregadas && !erroFontes) {
+  useEffect(() => {
+    if (pronto) SplashScreen.hideAsync();
+  }, [pronto]);
+
+  if (!pronto) {
     return null;
   }
+
+  const logado = usuario !== null;
 
   return (
     <>
@@ -44,11 +56,20 @@ export default function RootLayout() {
           headerShown: false,
           contentStyle: { backgroundColor: cores.fundo },
         }}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="onboarding" />
-        <Stack.Screen name="animal/[id]" />
-        <Stack.Screen name="trilha/[id]" />
-        <Stack.Screen name="local/novo" options={{ presentation: 'modal' }} />
+        {/* Só pra quem ainda não entrou */}
+        <Stack.Protected guard={!logado}>
+          <Stack.Screen name="login" />
+          <Stack.Screen name="registrar" />
+        </Stack.Protected>
+
+        {/* Resto do app: precisa estar logado */}
+        <Stack.Protected guard={logado} redirectTo="/login">
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="onboarding" />
+          <Stack.Screen name="animal/[id]" />
+          <Stack.Screen name="trilha/[id]" />
+          <Stack.Screen name="local/novo" options={{ presentation: 'modal' }} />
+        </Stack.Protected>
       </Stack>
     </>
   );

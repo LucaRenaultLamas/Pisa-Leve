@@ -12,10 +12,7 @@ type Props = {
   children?: ReactNode;
 };
 
-/**
- * Tela provisória 
- * Cada etapa do projeto substitui um destes pelo conteúdo de verdade.
- */
+// Tela provisória até a tela de verdade ficar pronta
 export function EmConstrucao({ numero, titulo, rota, children }: Props) {
   const podeVoltar = useCanGoBack();
 
@@ -42,7 +39,6 @@ type LinkDeTesteProps = {
   children: string;
 };
 
-/** Link simples para testar a navegação entre as telas provisórias. */
 export function LinkDeTeste({ href, children }: LinkDeTesteProps) {
   return (
     <Link href={href} style={estilos.link}>

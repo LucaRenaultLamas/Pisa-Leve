@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 330" preserveAspectRatio="xMaxYMin slice">
+  <g fill="none" stroke="#2B6A4B" stroke-width="1.5">
+    <path d="M-20 70 C 60 30, 120 110, 200 80 S 330 20, 420 60"/>
+    <path d="M-20 105 C 70 65, 120 150, 205 118 S 330 60, 420 98"/>
+    <path d="M-20 142 C 80 100, 125 190, 210 156 S 335 100, 420 136"/>
+    <path d="M-20 180 C 90 140, 130 228, 215 194 S 340 140, 420 174"/>
+    <path d="M-20 218 C 100 178, 135 266, 220 232 S 345 180, 420 212"/>
+    <path d="M-20 256 C 110 216, 140 304, 225 270 S 350 220, 420 250"/>
+  </g>
+  <path d="M345 300 C 335 250, 375 230, 360 180 S 315 120, 350 60" fill="none" stroke="#DCEBD6" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 9"/>
+  <circle cx="350" cy="60" r="7" fill="#DCEBD6"/>
+  <circle cx="350" cy="60" r="3" fill="#173F2E"/>
+</svg>
