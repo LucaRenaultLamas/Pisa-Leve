@@ -65,10 +65,19 @@ function NavegadorRaiz() {
         {/* Resto do app: precisa estar logado */}
         <Stack.Protected guard={logado} redirectTo="/login">
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="onboarding" />
           <Stack.Screen name="animal/[id]" />
           <Stack.Screen name="trilha/[id]" />
           <Stack.Screen name="local/novo" options={{ presentation: 'modal' }} />
+          {/* Popup por cima da tela atual: o fundo transparente deixa o app aparecer atrás */}
+          <Stack.Screen
+            name="onboarding"
+            options={{
+              presentation: 'transparentModal',
+              animation: 'fade',
+              gestureEnabled: false,
+              contentStyle: { backgroundColor: 'transparent' },
+            }}
+          />
         </Stack.Protected>
       </Stack>
     </>

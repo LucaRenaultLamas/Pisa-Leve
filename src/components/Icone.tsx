@@ -9,7 +9,10 @@ export type NomeIcone =
   | 'voltar'
   | 'check'
   | 'alerta'
-  | 'montanha';
+  | 'montanha'
+  | 'mais'
+  | 'fechar'
+  | 'info';
 
 type Props = {
   nome: NomeIcone;
@@ -62,6 +65,14 @@ export function Icone({ nome, tamanho = 20, cor, espessura = 1.8 }: Props) {
         <>
           <Path d="m3 20 6.5-11 4 6.5L16 12l5 8z" {...traco} />
           <Path d="M8 5.5a1.5 1.5 0 1 0 0-.01" {...traco} />
+        </>
+      )}
+      {nome === 'mais' && <Path d="M12 5v14M5 12h14" {...traco} />}
+      {nome === 'fechar' && <Path d="M6.5 6.5l11 11M17.5 6.5l-11 11" {...traco} />}
+      {nome === 'info' && (
+        <>
+          <Circle cx={12} cy={12} r={8.5} {...traco} />
+          <Path d="M12 11v5M12 8v.1" {...traco} />
         </>
       )}
     </Svg>

@@ -1,9 +1,21 @@
+import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
+import { useEffect } from 'react';
 
 import { cores } from '@/constants/tema';
+import { useSessao } from '@/contexts/sessao';
 
 // Abas de baixo. sf = ícone do iPhone, md = do Android
 export default function TabsLayout() {
+  const { perfil } = useSessao();
+
+  // Primeiro login (conta sem perfil de alergias): abre o popup uma vez.
+  // Depois de salvar ou pular, ele só abre pelo Perfil.
+  useEffect(() => {
+    if (!perfil) router.push('/onboarding');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <NativeTabs
       backgroundColor={cores.superficie}
