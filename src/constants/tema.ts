@@ -13,6 +13,17 @@ export const cores = {
   erroBorda: '#E7B7B1',
   erroTexto: '#8C1D18',
   primariaClara: '#5E8F74',
+  // Aviso amarelo (alergia)
+  avisoFundo: '#FCEFC7',
+  avisoBorda: '#EBD48A',
+  avisoTexto: '#6B4E00',
+  // Etiqueta "Peçonhento"
+  perigoFundo: '#FBDAD6',
+  perigoTexto: '#9A2219',
+  // Mapa
+  mapaFundo: '#E4EEDF',
+  fotoVazia: '#C9D9C3',
+  voceAqui: '#2F7BD8',
 } as const;
 
 export const fontes = {

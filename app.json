@@ -26,6 +26,12 @@
     "plugins": [
       "expo-router",
       [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "O Pisa Leve usa sua localização para mostrar animais vistos perto de você."
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#173F2E",

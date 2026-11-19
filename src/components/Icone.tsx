@@ -23,6 +23,13 @@ const ICONES = {
   avancar: 'chevron-forward',
   email: 'mail-outline',
   arroba: 'at-outline',
+  expandir: 'chevron-down',
+  recolher: 'chevron-up',
+  mira: 'locate-outline',
+  foto: 'image-outline',
+  recarregar: 'refresh',
+  folha: 'leaf-outline',
+  filtro: 'options-outline',
 } satisfies Record<string, ComponentProps<typeof Ionicons>['name']>;
 
 export type NomeIcone = keyof typeof ICONES;

@@ -11,19 +11,12 @@ import { PopupConfirmacao } from '@/components/PopupConfirmacao';
 import { gruposDeAlergias } from '@/constants/alergias';
 import { cores, espacos, fontes, raios } from '@/constants/tema';
 import { useSessao } from '@/contexts/sessao';
+import { iniciais } from '@/utils/texto';
 
 // Troca os ids salvos pelos nomes da lista
 const rotuloPorId = new Map(
   gruposDeAlergias.flatMap((g) => g.itens).map((item) => [item.id, item.rotulo]),
 );
-
-// "Luca Lamas" -> "LL"
-function iniciais(nome: string) {
-  const partes = nome.trim().split(/\s+/);
-  const primeira = partes[0]?.[0] ?? '?';
-  const ultima = partes.length > 1 ? partes[partes.length - 1][0] : '';
-  return (primeira + ultima).toUpperCase();
-}
 
 export default function Perfil() {
   const { usuario, perfil, sair } = useSessao();
