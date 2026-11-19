@@ -11,7 +11,7 @@ type Props = {
 export function AvisoErro({ titulo, mensagem }: Props) {
   return (
     <View style={estilos.aviso} accessibilityRole="alert" accessibilityLiveRegion="polite">
-      <Icone nome="alerta" cor={cores.erro} espessura={2} />
+      <Icone nome="alerta" cor={cores.erro} />
       <View style={estilos.textos}>
         <Text style={estilos.titulo}>{titulo}</Text>
         {!!mensagem && <Text style={estilos.mensagem}>{mensagem}</Text>}

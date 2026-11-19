@@ -9,8 +9,7 @@ import { useSessao } from '@/contexts/sessao';
 export default function TabsLayout() {
   const { perfil } = useSessao();
 
-  // Primeiro login (conta sem perfil de alergias): abre o popup uma vez.
-  // Depois de salvar ou pular, ele só abre pelo Perfil.
+  // 1º login: abre o popup de alergias uma vez só
   useEffect(() => {
     if (!perfil) router.push('/onboarding');
     // eslint-disable-next-line react-hooks/exhaustive-deps

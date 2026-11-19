@@ -1,5 +1,6 @@
 import { useState, type Ref } from 'react';
 import {
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -40,6 +41,9 @@ export function CampoTexto({
   const [focado, setFocado] = useState(false);
   const [senhaVisivel, setSenhaVisivel] = useState(false);
   const temErro = !!erro;
+  // respiro lateral só quando tem ícone do lado
+  const temAlgoAEsquerda = !!icone || !!prefixo;
+  const temAlgoADireita = senha || (valido && !temErro);
 
   return (
     <View style={estilos.container}>
@@ -48,6 +52,8 @@ export function CampoTexto({
       <View
         style={[
           estilos.caixa,
+          temAlgoAEsquerda && estilos.caixaComIconeEsquerda,
+          temAlgoADireita && estilos.caixaComIconeDireita,
           senha && estilos.caixaComBotao,
           focado && estilos.caixaFocada,
           temErro && estilos.caixaComErro,
@@ -60,7 +66,12 @@ export function CampoTexto({
           placeholderTextColor={cores.bordaForte}
           secureTextEntry={senha && !senhaVisivel}
           autoCorrect={senha ? false : undefined}
-          style={[estilos.campo, style]}
+          style={[
+            estilos.campo,
+            !temAlgoAEsquerda && estilos.campoRespiroEsquerda,
+            !temAlgoADireita && estilos.campoRespiroDireita,
+            style,
+          ]}
           onFocus={(e) => {
             setFocado(true);
             onFocus?.(e);
@@ -74,7 +85,7 @@ export function CampoTexto({
         />
 
         {valido && !temErro && (
-          <Icone nome="check" cor={cores.primariaMedia} espessura={2.2} />
+          <Icone nome="check" cor={cores.primariaMedia} />
         )}
 
         {senha && (
@@ -90,7 +101,7 @@ export function CampoTexto({
 
       {typeof erro === 'string' && erro ? (
         <View style={estilos.linhaMensagem}>
-          <Icone nome="alerta" cor={cores.erro} tamanho={14} espessura={2.4} />
+          <Icone nome="alerta" cor={cores.erro} tamanho={14} />
           <Text style={estilos.erro}>{erro}</Text>
         </View>
       ) : (
@@ -114,11 +125,17 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     height: 52,
-    paddingHorizontal: 14,
     borderRadius: raios.campo,
     borderWidth: 1.5,
     borderColor: cores.borda,
     backgroundColor: cores.superficie,
+    overflow: 'hidden', // nada passa dos cantos arredondados
+  },
+  caixaComIconeEsquerda: {
+    paddingLeft: 14,
+  },
+  caixaComIconeDireita: {
+    paddingRight: 14,
   },
   caixaComBotao: {
     paddingRight: 6,
@@ -138,11 +155,26 @@ const estilos = StyleSheet.create({
   campo: {
     flex: 1,
     minWidth: 0,
+    alignSelf: 'stretch',
     height: '100%',
+    // raio da caixa menos a borda
+    borderRadius: raios.campo - 1.5,
+    borderWidth: 0,
+    backgroundColor: 'transparent',
     fontFamily: fontes.regular,
     fontSize: 16,
     color: cores.texto,
     outlineWidth: 0,
+    ...Platform.select({
+      // esconde o fundo do autopreencher do Chrome
+      web: { boxShadow: `inset 0 0 0 1000px ${cores.superficie}` },
+    }),
+  },
+  campoRespiroEsquerda: {
+    paddingLeft: 14,
+  },
+  campoRespiroDireita: {
+    paddingRight: 14,
   },
   botaoOlho: {
     width: 44,

@@ -6,7 +6,7 @@ import { cores, espacos, fontes, raios } from '@/constants/tema';
 type Props = {
   titulo: string;
   onPress: () => void;
-  variante?: 'primario' | 'secundario';
+  variante?: 'primario' | 'secundario' | 'perigo';
   icone?: NomeIcone;
   carregando?: boolean;
   tituloCarregando?: string;
@@ -23,7 +23,8 @@ export function Botao({
   desabilitado = false,
 }: Props) {
   const primario = variante === 'primario';
-  const corTexto = primario ? cores.superficie : cores.primaria;
+  const perigo = variante === 'perigo';
+  const corTexto = primario || perigo ? cores.superficie : cores.primaria;
   const inativo = desabilitado || carregando;
 
   return (
@@ -34,7 +35,7 @@ export function Botao({
       accessibilityState={{ disabled: inativo, busy: carregando }}
       style={({ pressed }) => [
         estilos.botao,
-        primario ? estilos.primario : estilos.secundario,
+        estilos[variante],
         carregando && primario && estilos.primarioCarregando,
         pressed && estilos.pressionado,
         desabilitado && estilos.desabilitado,
@@ -44,7 +45,7 @@ export function Botao({
         <Text style={[estilos.texto, { color: corTexto }]}>
           {carregando && tituloCarregando ? tituloCarregando : titulo}
         </Text>
-        {!carregando && icone && <Icone nome={icone} cor={corTexto} tamanho={18} espessura={2.2} />}
+        {!carregando && icone && <Icone nome={icone} cor={corTexto} tamanho={18} />}
       </View>
     </Pressable>
   );
@@ -63,6 +64,9 @@ const estilos = StyleSheet.create({
   },
   primarioCarregando: {
     backgroundColor: cores.primariaMedia,
+  },
+  perigo: {
+    backgroundColor: cores.erro,
   },
   secundario: {
     backgroundColor: cores.superficie,

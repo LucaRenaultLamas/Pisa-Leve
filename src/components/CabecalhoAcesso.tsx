@@ -15,7 +15,6 @@ type Props = {
 export function CabecalhoAcesso({ rotulo, titulo, subtitulo, onVoltar }: Props) {
   return (
     <View style={estilos.cabecalho}>
-      {/* Desenho de fundo (assets/svg) */}
       <CurvasDeNivel style={StyleSheet.absoluteFill} width="100%" height="100%" aria-hidden />
 
       {onVoltar ? (
@@ -25,7 +24,7 @@ export function CabecalhoAcesso({ rotulo, titulo, subtitulo, onVoltar }: Props) 
           accessibilityLabel="Voltar"
           hitSlop={8}
           style={({ pressed }) => [estilos.voltar, pressed && { opacity: 0.7 }]}>
-          <Icone nome="voltar" cor={cores.superficie} tamanho={22} espessura={2.2} />
+          <Icone nome="voltar" cor={cores.superficie} tamanho={22} />
         </Pressable>
       ) : (
         <View style={estilos.marca}>

@@ -27,10 +27,10 @@ export function ChipSelecao({ rotulo, marcado, onPress, acao = 'marcar' }: Props
         pressed && estilos.pressionado,
       ]}>
       {remover ? (
-        <Icone nome="fechar" cor={cores.primaria} tamanho={16} espessura={2.4} />
+        <Icone nome="fechar" cor={cores.primaria} tamanho={16} />
       ) : (
         <View style={[estilos.caixa, marcado && estilos.caixaMarcada]}>
-          {marcado && <Icone nome="check" cor={cores.superficie} tamanho={13} espessura={3} />}
+          {marcado && <Icone nome="check" cor={cores.superficie} tamanho={13} />}
         </View>
       )}
       <Text style={[estilos.rotulo, marcado && estilos.rotuloMarcado]}>{rotulo}</Text>

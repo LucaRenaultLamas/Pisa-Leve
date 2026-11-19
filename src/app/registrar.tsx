@@ -240,7 +240,6 @@ export default function Registrar() {
           <View style={estilos.linha} />
         </View>
 
-        {/* Volta pro /login */}
         <Botao titulo="Entrar" variante="secundario" onPress={voltarParaEntrar} />
       </View>
     </LayoutAcesso>

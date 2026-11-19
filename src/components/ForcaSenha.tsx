@@ -25,7 +25,7 @@ function Regra({ ok, texto }: { ok: boolean; texto: string }) {
   return (
     <View style={estilos.regra}>
       {ok ? (
-        <Icone nome="check" cor={cores.primariaMedia} tamanho={14} espessura={3} />
+        <Icone nome="check" cor={cores.primariaMedia} tamanho={14} />
       ) : (
         <View style={estilos.ponto} />
       )}

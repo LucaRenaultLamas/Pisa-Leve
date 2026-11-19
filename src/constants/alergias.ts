@@ -1,5 +1,4 @@
-// Opções do Perfil de alergias, na ordem do mockup.
-// O id é o que fica salvo; o rótulo pode mudar à vontade.
+// Opções do popup de alergias. O id é o que fica salvo; o rótulo pode mudar
 export type GrupoAlergias = {
   titulo: string;
   itens: { id: string; rotulo: string }[];

@@ -29,8 +29,7 @@ const comparavel = (texto: string) =>
 
 export default function Onboarding() {
   const { perfil, salvarPerfil } = useSessao();
-  // Sem perfil = primeiro login. Depois disso o popup só abre pelo Perfil (editar).
-  // Fica fixo ao abrir, para não virar "edição" no meio do salvamento.
+  // Sem perfil = 1º login. Fica fixo pra não virar "edição" no meio do salvar
   const [editando] = useState(perfil !== null);
   const margens = useSafeAreaInsets();
 
@@ -53,8 +52,7 @@ export default function Onboarding() {
     }).start();
   }, [subida]);
 
-  // No primeiro login o voltar do Android não fecha: só Salvar ou Pular,
-  // e os dois gravam o perfil, então o popup não aparece de novo sozinho
+  // No 1º login o voltar do Android não fecha: tem que Salvar ou Pular
   useEffect(() => {
     if (editando) return;
     const assinatura = BackHandler.addEventListener('hardwareBackPress', () => true);
@@ -138,7 +136,7 @@ export default function Onboarding() {
 
   return (
     <View style={estilos.popup}>
-      {/* Fundo escuro: no 1º acesso não fecha ao tocar, para a pessoa escolher Salvar ou Pular */}
+      {/* Fundo escuro: no 1º login tocar fora não fecha */}
       <Pressable
         style={estilos.fundoEscuro}
         onPress={editando ? fechar : undefined}
@@ -177,7 +175,7 @@ export default function Onboarding() {
                 accessibilityRole="button"
                 accessibilityLabel="Fechar"
                 style={estilos.botaoFechar}>
-                <Icone nome="fechar" cor={cores.primaria} tamanho={20} espessura={2.2} />
+                <Icone nome="fechar" cor={cores.primaria} tamanho={20} />
               </Pressable>
             )}
           </View>
@@ -234,7 +232,7 @@ export default function Onboarding() {
                     pressed && { opacity: 0.8 },
                     !novaAlergia.trim() && { opacity: 0.5 },
                   ]}>
-                  <Icone nome="mais" cor={cores.primaria} tamanho={18} espessura={2.2} />
+                  <Icone nome="mais" cor={cores.primaria} tamanho={18} />
                   <Text style={estilos.textoAdicionar}>Adicionar</Text>
                 </Pressable>
               </View>
@@ -300,7 +298,7 @@ const estilos = StyleSheet.create({
   },
   fundoEscuro: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(20, 38, 28, 0.55)', // cor do texto, translúcida
+    backgroundColor: 'rgba(20, 38, 28, 0.55)',
   },
   areaFolha: {
     flex: 1,

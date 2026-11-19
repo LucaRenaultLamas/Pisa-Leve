@@ -17,7 +17,7 @@ export function CaixaSelecao({ rotulo, marcado, onMudar }: Props) {
       accessibilityState={{ checked: marcado }}
       style={estilos.linha}>
       <View style={[estilos.caixa, marcado && estilos.caixaMarcada]}>
-        {marcado && <Icone nome="check" cor={cores.superficie} tamanho={13} espessura={3} />}
+        {marcado && <Icone nome="check" cor={cores.superficie} tamanho={13} />}
       </View>
       <Text style={estilos.rotulo}>{rotulo}</Text>
     </Pressable>
