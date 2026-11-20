@@ -12,6 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { cores } from '@/constants/tema';
+import { FavoritasProvider } from '@/contexts/favoritas';
 import { SessaoProvider, useSessao } from '@/contexts/sessao';
 
 // Segura a splash até carregar as fontes e o login salvo
@@ -20,7 +21,9 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   return (
     <SessaoProvider>
-      <NavegadorRaiz />
+      <FavoritasProvider>
+        <NavegadorRaiz />
+      </FavoritasProvider>
     </SessaoProvider>
   );
 }

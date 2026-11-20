@@ -21,7 +21,7 @@ export function CartaoAvistamento({ avistamento, onPress, largura }: Props) {
     <Pressable
       onPress={onPress}
       accessibilityRole="link"
-      accessibilityLabel={`${nome}${alergia ? ', ligado à sua alergia' : peconhento ? ', peçonhento' : ''}, ${detalhe}`}
+      accessibilityLabel={`${nome}${peconhento ? ', peçonhento' : ''}${alergia ? ', ligado à sua alergia' : ''}, ${detalhe}`}
       style={({ pressed }) => [
         estilos.cartao,
         largura ? { width: largura } : estilos.cartaoGrade,
@@ -36,30 +36,47 @@ export function CartaoAvistamento({ avistamento, onPress, largura }: Props) {
       )}
 
       <View style={estilos.textos}>
-        {alergia ? (
-          <Etiqueta texto="Sua alergia" fundo={cores.avisoFundo} cor={cores.avisoTexto} />
-        ) : peconhento ? (
-          <Etiqueta texto="Peçonhento" fundo={cores.perigoFundo} cor={cores.perigoTexto} />
-        ) : null}
+        {/* Espaço da etiqueta fica reservado mesmo vazio: todos os cartões com a mesma altura */}
+        <View style={estilos.etiquetas}>
+          {peconhento && (
+            <Etiqueta texto="Peçonhento" fundo={cores.perigoFundo} cor={cores.perigoTexto} />
+          )}
+          {alergia && (
+            // As duas juntas não cabem numa linha: a de alergia vira só o ícone
+            <Etiqueta
+              texto={peconhento ? null : 'Sua alergia'}
+              fundo={cores.avisoFundo}
+              cor={cores.avisoTexto}
+            />
+          )}
+        </View>
         <Text style={estilos.nome} numberOfLines={2}>
           {nome}
         </Text>
-        <Text style={estilos.detalhe}>{detalhe}</Text>
+        <Text style={estilos.detalhe} numberOfLines={1}>
+          {detalhe}
+        </Text>
       </View>
     </Pressable>
   );
 }
 
-function Etiqueta({ texto, fundo, cor }: { texto: string; fundo: string; cor: string }) {
+function Etiqueta({ texto, fundo, cor }: { texto: string | null; fundo: string; cor: string }) {
   return (
     <View style={[estilos.etiqueta, { backgroundColor: fundo }]}>
       <Icone nome="alerta" cor={cor} tamanho={13} />
-      <Text style={[estilos.etiquetaTexto, { color: cor }]}>{texto}</Text>
+      {texto && <Text style={[estilos.etiquetaTexto, { color: cor }]}>{texto}</Text>}
     </View>
   );
 }
 
 const estilos = StyleSheet.create({
+  etiquetas: {
+    flexDirection: 'row',
+    gap: 4,
+    height: 21,
+    overflow: 'hidden',
+  },
   cartao: {
     padding: 8,
     gap: 6,
@@ -86,6 +103,7 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
   },
   textos: {
+    alignSelf: 'stretch',
     paddingHorizontal: 4,
     paddingBottom: 4,
     gap: 4,
@@ -103,9 +121,12 @@ const estilos = StyleSheet.create({
     fontFamily: fontes.negrito,
     fontSize: 11,
   },
+  // Altura de 2 linhas sempre, mesmo com nome curto
   nome: {
+    height: 38,
     fontFamily: fontes.negrito,
     fontSize: 14,
+    lineHeight: 19,
     color: cores.texto,
   },
   detalhe: {

@@ -13,13 +13,6 @@ export function distanciaKm(a: Coordenadas, b: Coordenadas) {
   return 2 * RAIO_TERRA_KM * Math.asin(Math.sqrt(h));
 }
 
-// Usado no mapa desenhado da web
-export function deslocamentoKm(a: Coordenadas, b: Coordenadas) {
-  const leste = rad(b.longitude - a.longitude) * Math.cos(rad(a.latitude)) * RAIO_TERRA_KM;
-  const norte = rad(b.latitude - a.latitude) * RAIO_TERRA_KM;
-  return { leste, norte };
-}
-
 export function formatarDistancia(km: number) {
   if (km < 1) return `${Math.max(10, Math.round((km * 1000) / 10) * 10)} m`;
   return `${km.toFixed(1).replace('.', ',')} km`;

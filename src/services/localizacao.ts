@@ -42,3 +42,16 @@ export async function pegarLocalizacaoAtual(): Promise<Coordenadas> {
     throw new ErroLocalizacao('Não deu para achar sua localização. Confira se o GPS está ligado.');
   }
 }
+
+// Avisa quando a pessoa anda; devolve a função que para de acompanhar
+export async function acompanharLocalizacao(
+  aoMudar: (centro: Coordenadas) => void,
+  metros: number,
+): Promise<() => void> {
+  const assinatura = await Location.watchPositionAsync(
+    { accuracy: Location.Accuracy.Balanced, distanceInterval: metros },
+    (posicao) =>
+      aoMudar({ latitude: posicao.coords.latitude, longitude: posicao.coords.longitude }),
+  );
+  return () => assinatura.remove();
+}

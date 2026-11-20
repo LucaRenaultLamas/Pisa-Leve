@@ -1,19 +1,12 @@
-import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
-import { useEffect } from 'react';
 
 import { cores } from '@/constants/tema';
-import { useSessao } from '@/contexts/sessao';
+import { useAoEntrar } from '@/hooks/useAoEntrar';
 
-// Abas de baixo. sf = ícone do iPhone, md = do Android
+// Abas de baixo no celular. sf = ícone do iPhone, md = do Android.
+// Na web os ícones do NativeTabs não aparecem: lá entra o _layout.web.tsx
 export default function TabsLayout() {
-  const { perfil } = useSessao();
-
-  // 1º login: abre o popup de alergias uma vez só
-  useEffect(() => {
-    if (!perfil) router.push('/onboarding');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useAoEntrar();
 
   return (
     <NativeTabs

@@ -8,18 +8,8 @@ export const TAXONS = {
 // Alergia fica fora do grupo: um bicho pode ser aranha e alergia ao mesmo tempo
 export type Grupo = 'cobra' | 'aranha' | 'escorpiao' | 'outro';
 
-export type Filtro = 'todos' | 'cobra' | 'aranha' | 'escorpiao' | 'alergia';
-
-export const FILTROS: { id: Filtro; rotulo: string }[] = [
-  { id: 'todos', rotulo: 'Todos' },
-  { id: 'cobra', rotulo: 'Cobras' },
-  { id: 'aranha', rotulo: 'Aranhas' },
-  { id: 'escorpiao', rotulo: 'Escorpiões' },
-  { id: 'alergia', rotulo: 'Alergias' },
-];
-
 // Gêneros perigosos no Brasil; escorpião conta todo
-const PECONHENTOS = [
+export const TAXONS_PECONHENTOS = [
   30767, // Bothrops (jararacas)
   30692, // Crotalus (cascavéis)
   30493, // Micrurus (corais-verdadeiras)
@@ -27,6 +17,7 @@ const PECONHENTOS = [
   48137, // Loxosceles (aranha-marrom)
   53388, // Phoneutria (armadeira)
   47370, // Latrodectus (viúva-negra)
+  85106, // Lonomia (taturana): pode causar sangramento
   TAXONS.escorpioes,
 ];
 
@@ -46,7 +37,7 @@ export function taxonsDasAlergias(alergias: string[]) {
 }
 
 export function ehPeconhento(ancestrais: number[]) {
-  return PECONHENTOS.some((id) => ancestrais.includes(id));
+  return TAXONS_PECONHENTOS.some((id) => ancestrais.includes(id));
 }
 
 export function grupoDe(ancestrais: number[]): Grupo {
