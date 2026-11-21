@@ -7,4 +7,6 @@ export type PropsMapaAvistamentos = {
   raioKm: number;
   avistamentos: Avistamento[];
   onAbrir: (avistamento: Avistamento) => void;
+  // false = o centro é um local salvo, não a pessoa (aba Alertas)
+  centroEhVoce?: boolean;
 };

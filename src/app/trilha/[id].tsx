@@ -1,11 +1,12 @@
 import { router, useCanGoBack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Line } from 'react-native-svg';
 
 import { AvisoErro } from '@/components/AvisoErro';
 import { Botao } from '@/components/Botao';
+import { Carregando } from '@/components/Carregando';
 import { ETIQUETA, textoRegistros } from '@/components/CartaoTrilha';
 import { Icone } from '@/components/Icone';
 import { MapaTrilha } from '@/components/MapaTrilha';
@@ -13,6 +14,7 @@ import { COR_RISCO } from '@/components/MiniTrilha';
 import { corDoRegistro, TRACEJADO } from '@/components/mapaTrilha.comum';
 import { TAXONS_POR_ALERGIA, taxonsDasAlergias } from '@/constants/animais';
 import { cores, espacos, fontes, raios } from '@/constants/tema';
+import { useAlertas } from '@/contexts/alertas';
 import { useFavoritas } from '@/contexts/favoritas';
 import { useSessao } from '@/contexts/sessao';
 import {
@@ -39,6 +41,7 @@ export default function TrilhaDetalhe() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { perfil } = useSessao();
   const { favoritas, ehFavorita, alternar } = useFavoritas();
+  const { locais } = useAlertas();
   const podeVoltar = useCanGoBack();
 
   // undefined = procurando; null = não achou
@@ -104,7 +107,7 @@ export default function TrilhaDetalhe() {
         </View>
         <View style={estilos.centro}>
           {trilha === undefined ? (
-            <ActivityIndicator color={cores.primaria} />
+            <Carregando />
           ) : (
             <>
               <AvisoErro
@@ -120,6 +123,7 @@ export default function TrilhaDetalhe() {
   }
 
   const favorita = ehFavorita(trilha.id);
+  const monitorada = locais.find((l) => l.trilhaId === trilha.id);
   const semDesenho = trilha.trechos.length === 0;
   const etiqueta = risco ? ETIQUETA[risco.nivel] : null;
   const tamanho =
@@ -160,7 +164,7 @@ export default function TrilhaDetalhe() {
         <View style={estilos.resumo}>
           {risco === undefined ? (
             <View style={estilos.linha}>
-              <ActivityIndicator size="small" color={cores.textoSecundario} />
+              <Carregando tamanho="pequeno" />
               <Text style={estilos.resumoTexto}>Calculando o risco de cada trecho…</Text>
             </View>
           ) : risco && etiqueta ? (
@@ -191,6 +195,24 @@ export default function TrilhaDetalhe() {
           </View>
         )}
 
+        {monitorada ? (
+          <Botao
+            titulo="Monitorada nos Alertas"
+            variante="secundario"
+            icone="sino"
+            onPress={() =>
+              router.push({ pathname: '/alertas/local/[id]', params: { id: monitorada.id } })
+            }
+          />
+        ) : (
+          <Botao
+            titulo="Monitorar esta trilha"
+            variante="secundario"
+            icone="sino"
+            onPress={() => router.push({ pathname: '/local/novo', params: { trilha: trilha.id } })}
+          />
+        )}
+
         <View style={estilos.mapa}>
           <MapaTrilha
             trilha={trilha}
@@ -200,7 +222,7 @@ export default function TrilhaDetalhe() {
           />
           {risco === undefined && (
             <View style={estilos.selo} pointerEvents="none">
-              <ActivityIndicator size="small" color={cores.primaria} />
+              <Carregando tamanho="pequeno" corFundo={cores.superficie} />
               <Text style={estilos.seloTexto}>Calculando risco…</Text>
             </View>
           )}

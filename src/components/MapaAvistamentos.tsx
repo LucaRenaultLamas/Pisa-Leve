@@ -18,7 +18,13 @@ function regiaoDoRaio(
 }
 
 // Na web entra o MapaAvistamentos.web.tsx
-export function MapaAvistamentos({ centro, raioKm, avistamentos, onAbrir }: PropsMapaAvistamentos) {
+export function MapaAvistamentos({
+  centro,
+  raioKm,
+  avistamentos,
+  onAbrir,
+  centroEhVoce = true,
+}: PropsMapaAvistamentos) {
   const mapa = useRef<MapView>(null);
 
   useEffect(() => {
@@ -34,7 +40,7 @@ export function MapaAvistamentos({ centro, raioKm, avistamentos, onAbrir }: Prop
         showsUserLocation
         showsMyLocationButton={false}
         toolbarEnabled={false}
-        accessibilityLabel={`Mapa com ${avistamentos.length} avistamentos perto de você`}>
+        accessibilityLabel={`Mapa com ${avistamentos.length} avistamentos perto ${centroEhVoce ? 'de você' : 'do local'}`}>
         <Circle
           center={centro}
           radius={raioKm * 1000}
@@ -59,7 +65,7 @@ export function MapaAvistamentos({ centro, raioKm, avistamentos, onAbrir }: Prop
       <Pressable
         onPress={() => mapa.current?.animateToRegion(regiaoDoRaio(centro, raioKm), 400)}
         accessibilityRole="button"
-        accessibilityLabel="Centralizar no meu local"
+        accessibilityLabel={centroEhVoce ? 'Centralizar no meu local' : 'Centralizar no local'}
         style={({ pressed }) => [estilos.centralizar, pressed && { opacity: 0.8 }]}>
         <Icone nome="mira" cor={cores.primaria} tamanho={22} />
       </Pressable>

@@ -1,12 +1,13 @@
 import { NativeTabs } from 'expo-router/native-tabs';
 
 import { cores } from '@/constants/tema';
+import { useAlertas } from '@/contexts/alertas';
 import { useAoEntrar } from '@/hooks/useAoEntrar';
 
-// Abas de baixo no celular. sf = ícone do iPhone, md = do Android.
-// Na web os ícones do NativeTabs não aparecem: lá entra o _layout.web.tsx
+// sf = ícone do iPhone, md = do Android. Na web entra o _layout.web.tsx
 export default function TabsLayout() {
   useAoEntrar();
+  const { totalNovos } = useAlertas();
 
   return (
     <NativeTabs
@@ -36,6 +37,9 @@ export default function TabsLayout() {
       <NativeTabs.Trigger name="alertas">
         <NativeTabs.Trigger.Label>Alertas</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="bell" md="notifications" />
+        <NativeTabs.Trigger.Badge hidden={totalNovos === 0}>
+          {String(totalNovos)}
+        </NativeTabs.Trigger.Badge>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="perfil">

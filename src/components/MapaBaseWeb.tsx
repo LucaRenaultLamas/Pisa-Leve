@@ -37,6 +37,7 @@ type Props = {
   rotuloCentralizar: string;
   camadaSvg?: (mapa: ContextoMapa) => ReactNode; // desenho por baixo dos pins
   sobre?: (mapa: ContextoMapa) => ReactNode; // pins e outros tocáveis
+  aoMover?: (centro: Coordenadas) => void; // centro da tela, a cada mudança
 };
 
 // Só existem no react-native-web: sem touchAction o celular rola a página em vez de arrastar o mapa
@@ -77,7 +78,7 @@ function enquadrar(area: Area, largura: number, altura: number): Vista {
 }
 
 // react-native-maps não roda na web: aqui o mapa é montado com os tiles do OpenStreetMap
-export function MapaBaseWeb({ area, rotulo, rotuloCentralizar, camadaSvg, sobre }: Props) {
+export function MapaBaseWeb({ area, rotulo, rotuloCentralizar, camadaSvg, sobre, aoMover }: Props) {
   const [tamanho, setTamanho] = useState({ largura: 0, altura: 0 });
   const { largura, altura } = tamanho;
   // null = enquadrado na área; vira Vista quando a pessoa mexe
@@ -99,6 +100,13 @@ export function MapaBaseWeb({ area, rotulo, rotuloCentralizar, camadaSvg, sobre 
     const px = paraPixel(p, atual.zoom);
     return { x: px.x - esquerda, y: px.y - topo };
   };
+
+  const avisarMudanca = useRef(aoMover);
+  avisarMudanca.current = aoMover;
+  const { latitude: latCentro, longitude: lonCentro } = atual.centro;
+  useEffect(() => {
+    if (largura > 0) avisarMudanca.current?.({ latitude: latCentro, longitude: lonCentro });
+  }, [latCentro, lonCentro, largura]);
 
   // Ref pros handlers (arrasto e roda do mouse) sempre lerem a vista de agora
   const agora = useRef({ atual, largura, altura });
@@ -152,7 +160,6 @@ export function MapaBaseWeb({ area, rotulo, rotuloCentralizar, camadaSvg, sobre 
     };
     elemento.addEventListener('wheel', aoRolar, { passive: false });
     return () => elemento.removeEventListener('wheel', aoRolar);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const kmPorPx =

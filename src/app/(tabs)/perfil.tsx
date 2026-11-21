@@ -10,7 +10,10 @@ import { LinhaMenu } from '@/components/LinhaMenu';
 import { PopupConfirmacao } from '@/components/PopupConfirmacao';
 import { gruposDeAlergias } from '@/constants/alergias';
 import { cores, espacos, fontes, raios } from '@/constants/tema';
+import { useAlertas } from '@/contexts/alertas';
+import { useFavoritas } from '@/contexts/favoritas';
 import { useSessao } from '@/contexts/sessao';
+import { lerAnimaisSalvos } from '@/services/animaisSalvos';
 import { iniciais } from '@/utils/texto';
 
 // Troca os ids salvos pelos nomes da lista
@@ -36,9 +39,22 @@ export default function Perfil() {
     ...(perfil?.outras ?? []),
   ];
 
-  // Locais e salvos chegam nas etapas 7 e 8 (Detalhe do animal e Alertas)
-  const totalLocais = 0;
-  const totalSalvos = 0;
+  const { locais } = useAlertas();
+  const { favoritas } = useFavoritas();
+  const [animaisSalvos, setAnimaisSalvos] = useState(0);
+  const nomeUsuario = usuario?.usuario;
+  // Lê ao voltar pra aba: o coração do detalhe do animal muda a lista
+  useFocusEffect(
+    useCallback(() => {
+      if (!nomeUsuario) return;
+      lerAnimaisSalvos(nomeUsuario)
+        .then((a) => setAnimaisSalvos(a.length))
+        .catch(() => setAnimaisSalvos(0));
+    }, [nomeUsuario]),
+  );
+
+  const totalLocais = locais.length;
+  const totalSalvos = animaisSalvos + favoritas.length;
 
   const nome = usuario?.nome ?? '';
 

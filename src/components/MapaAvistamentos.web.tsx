@@ -9,14 +9,21 @@ import { cores } from '@/constants/tema';
 import { areaEmVolta } from '@/services/trilhas';
 import { formatarDistancia } from '@/utils/geo';
 
-export function MapaAvistamentos({ centro, raioKm, avistamentos, onAbrir }: PropsMapaAvistamentos) {
+export function MapaAvistamentos({
+  centro,
+  raioKm,
+  avistamentos,
+  onAbrir,
+  centroEhVoce = true,
+}: PropsMapaAvistamentos) {
+  const corCentro = centroEhVoce ? cores.voceAqui : cores.primaria;
   const area = useMemo(() => areaEmVolta(centro, raioKm), [centro, raioKm]);
 
   return (
     <MapaBaseWeb
       area={area}
-      rotulo={`Mapa com ${avistamentos.length} avistamentos a até ${raioKm} km de você`}
-      rotuloCentralizar="Centralizar no meu local"
+      rotulo={`Mapa com ${avistamentos.length} avistamentos a até ${raioKm} km ${centroEhVoce ? 'de você' : 'do local'}`}
+      rotuloCentralizar={centroEhVoce ? 'Centralizar no meu local' : 'Centralizar no local'}
       camadaSvg={({ naTela, kmPorPx }) => {
         const voce = naTela(centro);
         return (
@@ -30,12 +37,12 @@ export function MapaAvistamentos({ centro, raioKm, avistamentos, onAbrir }: Prop
               stroke={cores.primariaMedia}
               strokeWidth={2}
             />
-            <Circle cx={voce.x} cy={voce.y} r={16} fill={cores.voceAqui} fillOpacity={0.2} />
+            <Circle cx={voce.x} cy={voce.y} r={16} fill={corCentro} fillOpacity={0.2} />
             <Circle
               cx={voce.x}
               cy={voce.y}
               r={7}
-              fill={cores.voceAqui}
+              fill={corCentro}
               stroke={cores.superficie}
               strokeWidth={2.5}
             />

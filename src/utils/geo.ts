@@ -18,6 +18,11 @@ export function formatarDistancia(km: number) {
   return `${km.toFixed(1).replace('.', ',')} km`;
 }
 
+// "AAAA-MM-DD" no fuso do aparelho (toISOString é UTC e erra o dia à noite)
+export function diaLocal(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 export function tempoAtras(data: string | null) {
   if (!data) return 'data desconhecida';
   // Meio-dia evita a data voltar um dia por causa do fuso

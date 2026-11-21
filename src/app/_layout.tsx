@@ -10,8 +10,10 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { cores } from '@/constants/tema';
+import { AlertasProvider } from '@/contexts/alertas';
 import { FavoritasProvider } from '@/contexts/favoritas';
 import { SessaoProvider, useSessao } from '@/contexts/sessao';
 
@@ -20,11 +22,15 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
-    <SessaoProvider>
-      <FavoritasProvider>
-        <NavegadorRaiz />
-      </FavoritasProvider>
-    </SessaoProvider>
+    <SafeAreaProvider>
+      <SessaoProvider>
+        <FavoritasProvider>
+          <AlertasProvider>
+            <NavegadorRaiz />
+          </AlertasProvider>
+        </FavoritasProvider>
+      </SessaoProvider>
+    </SafeAreaProvider>
   );
 }
 
