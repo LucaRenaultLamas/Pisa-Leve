@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { Carregando } from '@/components/Carregando';
 import { Icone, type NomeIcone } from '@/components/Icone';
 import { MiniTrilha } from '@/components/MiniTrilha';
 import { cores, fontes } from '@/constants/tema';
@@ -85,7 +86,7 @@ export const CartaoTrilha = memo(function CartaoTrilha({
 
           {risco === undefined ? (
             <View style={estilos.calculando}>
-              <ActivityIndicator size="small" color={cores.textoSecundario} />
+              <Carregando tamanho="pequeno" corFundo={cores.superficie} />
               <Text style={estilos.detalhe}>Calculando risco…</Text>
             </View>
           ) : risco === null ? (

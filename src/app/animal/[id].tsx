@@ -1,7 +1,6 @@
 import { router, useCanGoBack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   Image,
   Linking,
   Pressable,
@@ -14,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AvisoErro } from '@/components/AvisoErro';
 import { Botao } from '@/components/Botao';
+import { Carregando } from '@/components/Carregando';
 import { Icone, type NomeIcone } from '@/components/Icone';
 import { PopupFoto } from '@/components/PopupFoto';
 import { gruposDeAlergias } from '@/constants/alergias';
@@ -156,21 +156,6 @@ export default function AnimalDetalhe() {
       <Text style={estilos.cabecalhoTitulo} accessibilityRole="header">
         Detalhes
       </Text>
-      {animal && (
-        <Pressable
-          onPress={alternarSalvo}
-          accessibilityRole="button"
-          accessibilityState={{ selected: salvo }}
-          accessibilityLabel={salvo ? `Tirar ${animal.nome} dos salvos` : `Salvar ${animal.nome}`}
-          hitSlop={4}
-          style={({ pressed }) => [estilos.coracao, pressed && { opacity: 0.7 }]}>
-          <Icone
-            nome={salvo ? 'coracaoCheio' : 'coracao'}
-            cor={salvo ? cores.erro : cores.primaria}
-            tamanho={24}
-          />
-        </Pressable>
-      )}
     </View>
   );
 
@@ -184,7 +169,7 @@ export default function AnimalDetalhe() {
               style={estilos.linhaCarregando}
               accessibilityRole="progressbar"
               accessibilityLabel="Carregando o animal">
-              <ActivityIndicator color={cores.primaria} />
+              <Carregando />
               <Text style={estilos.rotulo}>Carregando informações do animal…</Text>
             </View>
           ) : (
@@ -308,11 +293,26 @@ export default function AnimalDetalhe() {
           </View>
         )}
 
-        <View style={estilos.titulos}>
-          <Text style={estilos.nome}>{animal.nome}</Text>
-          {animal.nome !== animal.nomeCientifico && (
-            <Text style={estilos.cientifico}>{animal.nomeCientifico}</Text>
-          )}
+        <View style={estilos.linhaNome}>
+          <View style={estilos.titulos}>
+            <Text style={estilos.nome}>{animal.nome}</Text>
+            {animal.nome !== animal.nomeCientifico && (
+              <Text style={estilos.cientifico}>{animal.nomeCientifico}</Text>
+            )}
+          </View>
+          <Pressable
+            onPress={alternarSalvo}
+            accessibilityRole="button"
+            accessibilityState={{ selected: salvo }}
+            accessibilityLabel={salvo ? `Tirar ${animal.nome} dos salvos` : `Salvar ${animal.nome}`}
+            hitSlop={4}
+            style={({ pressed }) => [estilos.coracao, pressed && { opacity: 0.7 }]}>
+            <Icone
+              nome={salvo ? 'coracaoCheio' : 'coracao'}
+              cor={salvo ? cores.erro : cores.primaria}
+              tamanho={24}
+            />
+          </Pressable>
         </View>
 
         {detalhe && (
@@ -529,7 +529,13 @@ const estilos = StyleSheet.create({
     fontFamily: fontes.semiNegrito,
     fontSize: 13,
   },
+  linhaNome: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: espacos.md,
+  },
   titulos: {
+    flex: 1,
     gap: 6,
   },
   nome: {

@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -15,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AvisoErro } from '@/components/AvisoErro';
 import { BarraFiltros, type CampoFiltro, type FiltroAplicado } from '@/components/BarraFiltros';
 import { Botao } from '@/components/Botao';
+import { Carregando } from '@/components/Carregando';
 import { CartaoTrilha } from '@/components/CartaoTrilha';
 import { ChipFiltro } from '@/components/ChipFiltro';
 import { Icone } from '@/components/Icone';
@@ -115,7 +115,7 @@ type Ordem = (typeof ORDENS)[number]['id'];
 const FILTROS_INICIAIS: FiltroAplicado[] = [
   { id: 'ordem', campo: 'ordem', operador: 'por', valores: ['perto'] },
 ];
-type Escolha = 'perto' | number; // número = id da cidade no iNaturalist
+type Escolha = 'perto' | number; // número = osm_id do município
 
 type EstadoLocal =
   | { tipo: 'procurando' }
@@ -232,8 +232,7 @@ export default function Trilhas() {
       }
 
       setCarregando(true);
-      // Pode já estar em andamento desde que o app abriu (preCarregarTrilhas).
-      // Sem lista salva, a busca rápida mostra algo em segundos enquanto a completa demora
+      // Pode já ter começado ao abrir o app; sem lista salva, a busca rápida mostra algo antes
       const busca = buscarTrilhas(aqui, !salvas);
       let completaChegou = false;
       pararDeOuvir = busca.ouvir((rapidas) => {
@@ -390,7 +389,7 @@ export default function Trilhas() {
           {cidades === null || cidades.length === 0 ? (
             conferindoCidades || cidades === null ? (
               <View style={estilos.buscandoOsm}>
-                <ActivityIndicator color={cores.primaria} size="small" />
+                <Carregando tamanho="pequeno" />
                 <Text style={estilos.carregandoTexto}>Procurando cidades com trilhas…</Text>
               </View>
             ) : (
@@ -413,10 +412,9 @@ export default function Trilhas() {
             ))
           )}
           {conferindoCidades && !!cidades?.length && (
-            <ActivityIndicator
-              color={cores.primaria}
-              size="small"
-              accessibilityLabel="Procurando mais cidades com trilhas"
+            <Carregando
+              tamanho="pequeno"
+              rotulo="Procurando mais cidades com trilhas"
               style={estilos.maisCidades}
             />
           )}
@@ -481,7 +479,7 @@ export default function Trilhas() {
             )}
           </View>
         ) : !alvo ? (
-          <Carregando
+          <CarregandoComTexto
             texto={
               local.tipo === 'procurando'
                 ? 'Procurando sua localização…'
@@ -525,7 +523,7 @@ export default function Trilhas() {
 
             {carregando && !puxando && !soFavoritas && (
               <View style={estilos.buscandoOsm} accessibilityLiveRegion="polite">
-                <ActivityIndicator color={cores.primaria} size="small" />
+                <Carregando tamanho="pequeno" />
                 <Text style={estilos.carregandoTexto}>
                   {parcial
                     ? 'Completando a lista pelo OpenStreetMap…'
@@ -592,10 +590,10 @@ function haQuanto(quando: number) {
   return dias === 1 ? 'de ontem' : `de ${dias} dias atrás`;
 }
 
-function Carregando({ texto }: { texto: string }) {
+function CarregandoComTexto({ texto }: { texto: string }) {
   return (
     <View style={estilos.carregando} accessibilityRole="progressbar" accessibilityLabel={texto}>
-      <ActivityIndicator color={cores.primaria} />
+      <Carregando />
       <Text style={estilos.carregandoTexto}>{texto}</Text>
     </View>
   );

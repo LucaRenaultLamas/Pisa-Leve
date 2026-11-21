@@ -1,5 +1,6 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { Carregando } from '@/components/Carregando';
 import { Icone, type NomeIcone } from '@/components/Icone';
 import { cores, espacos, fontes, raios } from '@/constants/tema';
 
@@ -41,7 +42,11 @@ export function Botao({
         desabilitado && estilos.desabilitado,
       ]}>
       <View style={estilos.conteudo}>
-        {carregando && <ActivityIndicator color={corTexto} />}
+        {carregando && <Carregando
+            tamanho="pequeno"
+            variante={primario || perigo ? 'clara' : 'cor'}
+            corFundo={primario ? cores.primariaMedia : perigo ? cores.erro : cores.superficie}
+          />}
         <Text style={[estilos.texto, { color: corTexto }]}>
           {carregando && tituloCarregando ? tituloCarregando : titulo}
         </Text>
