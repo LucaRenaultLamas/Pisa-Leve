@@ -9,9 +9,17 @@ type Props = {
   onPress: () => void;
   icone?: NomeIcone;
   tom?: 'normal' | 'aviso';
+  rotuloAcessivel?: string; // padrão: "Filtrar: <rótulo>"
 };
 
-export function ChipFiltro({ rotulo, ativo, onPress, icone, tom = 'normal' }: Props) {
+export function ChipFiltro({
+  rotulo,
+  ativo,
+  onPress,
+  icone,
+  tom = 'normal',
+  rotuloAcessivel,
+}: Props) {
   const aviso = tom === 'aviso';
   const corTexto = ativo ? cores.superficie : aviso ? cores.avisoTexto : cores.texto;
 
@@ -20,7 +28,7 @@ export function ChipFiltro({ rotulo, ativo, onPress, icone, tom = 'normal' }: Pr
       onPress={onPress}
       accessibilityRole="radio"
       accessibilityState={{ selected: ativo }}
-      accessibilityLabel={`Filtrar: ${rotulo}`}
+      accessibilityLabel={rotuloAcessivel ?? `Filtrar: ${rotulo}`}
       style={({ pressed }) => [
         estilos.chip,
         aviso && estilos.aviso,

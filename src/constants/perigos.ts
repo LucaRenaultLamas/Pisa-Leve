@@ -93,3 +93,6 @@ const REGRAS: { taxons: number[]; perigo: Perigo | null }[] = [
 export function perigoDe(ancestrais: number[]): Perigo | null {
   return REGRAS.find((r) => r.taxons.some((id) => ancestrais.includes(id)))?.perigo ?? null;
 }
+
+// Tudo que tem perigo em alguma regra (para a lista "pedem cuidado" da Busca)
+export const TAXONS_COM_PERIGO = [...new Set(REGRAS.flatMap((r) => (r.perigo ? r.taxons : [])))];
