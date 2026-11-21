@@ -28,18 +28,44 @@ O Pisa Leve é um aplicativo para celular que ajuda a evitar acidentes com anima
 
 ## 🖼️ Telas
 
-<p align="center">
-  <img src="docs/telas/01-perfil-alergias.png" width="180" alt="Perfil de alergias">
-  <img src="docs/telas/02-explorar.png" width="180" alt="Explorar">
-  <img src="docs/telas/03-trilhas.png" width="180" alt="Trilhas">
-  <img src="docs/telas/04-detalhe-trilha.png" width="180" alt="Detalhe da trilha">
-</p>
-<p align="center">
-  <img src="docs/telas/05-busca.png" width="180" alt="Buscar animais">
-  <img src="docs/telas/06-detalhe-animal.png" width="180" alt="Detalhe do animal">
-  <img src="docs/telas/07-alertas.png" width="180" alt="Alertas">
-  <img src="docs/telas/08-perfil.png" width="180" alt="Perfil">
-</p>
+<table align="center">
+  <tr>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/01-perfil-alergias.png" width="180" alt="Perfil de alergias"><br>
+      <sub><b>Perfil de alergias</b></sub>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/02-explorar.png" width="180" alt="Explorar"><br>
+      <sub><b>Explorar</b></sub>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/03-trilhas.png" width="180" alt="Trilhas"><br>
+      <sub><b>Trilhas</b></sub>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/04-detalhe-trilha.png" width="180" alt="Detalhe da trilha"><br>
+      <sub><b>Detalhe da trilha</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/05-busca.png" width="180" alt="Buscar animais"><br>
+      <sub><b>Buscar animais</b></sub>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/06-detalhe-animal.png" width="180" alt="Detalhe do animal"><br>
+      <sub><b>Detalhe do animal</b></sub>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/07-alertas.png" width="180" alt="Alertas"><br>
+      <sub><b>Alertas</b></sub>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="docs/telas/08-perfil.png" width="180" alt="Perfil"><br>
+      <sub><b>Perfil</b></sub>
+    </td>
+  </tr>
+</table>
 
 ## 🚀 Como rodar localmente
 
