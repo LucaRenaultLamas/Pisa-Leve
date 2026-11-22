@@ -1,4 +1,4 @@
-// IDs de táxons do iNaturalist (conferidos na API em 19/11/2026)
+// IDs de táxons do iNaturalist
 export const TAXONS = {
   cobras: 85553, // Serpentes
   aranhas: 47118, // Araneae

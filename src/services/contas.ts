@@ -78,7 +78,7 @@ export async function criarConta(dados: DadosCadastro): Promise<Usuario> {
   return semSenha(conta);
 }
 
-// Confere o login (e-mail ou usuário) e a senha
+// Aceita e-mail ou usuário
 export async function autenticar(identificador: string, senha: string): Promise<Usuario> {
   const contas = await lerContas();
   const id = identificador.trim().toLowerCase();

@@ -3,7 +3,7 @@ import type { Coordenadas } from '@/services/localizacao';
 import type { Trilha } from '@/services/trilhas';
 import { distanciaKm } from '@/utils/geo';
 
-// v2 deixa pedir só os campos usados: 2 registros caem de ~400 KB para menos de 1 KB
+// A v2 deixa pedir só os campos usados: a resposta fica centenas de vezes menor
 const API_V2 = 'https://api.inaturalist.org/v2/observations';
 const TEMPO_LIMITE_MS = 15_000;
 const TAM_TRECHO_KM = 0.5;
@@ -188,7 +188,6 @@ async function calcular(trilha: Trilha, taxonsAlergia: number[]): Promise<RiscoT
     })),
     peconhentos,
     alergias,
-    // Mais recentes primeiro
     registros: registros.sort((a, b) => (b.data ?? '').localeCompare(a.data ?? '')),
   };
   return risco;

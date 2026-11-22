@@ -2,15 +2,14 @@ import type { Coordenadas } from '@/services/localizacao';
 import { pontoMaisPerto, salvarTrilhasOsm, type Area, type Trilha } from '@/services/trilhas';
 import { distanciaKm } from '@/utils/geo';
 
-// Servidores públicos e voluntários: vivem lotados, então tem mais de um.
-// Ordem pela medição de 20/11: Mail.ru 24 s; overpass-api.de 502 na hora; os outros > 90 s
+// Servidores públicos vivem lotados: tem mais de um, do mais rápido ao mais lento
 const SERVIDORES = [
   'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
   'https://overpass-api.de/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
 ];
-// Em 20/11 uma resposta boa levou 26-37 s; com menos que isso desistia cedo demais
+// Uma resposta boa leva ~30 s: menos que isso desiste cedo demais
 const TEMPO_LIMITE_MS = 40_000;
 // Se o servidor não responder nesse tempo, já chama o próximo junto
 const ESPERA_PROXIMO_MS = 4_000;
@@ -187,12 +186,10 @@ type Pedaco = {
 export async function buscarTrilhasOsm({ chave, area, referencia, raioKm }: Busca) {
   // Retângulo é bem mais leve pro servidor que "around"; o raio é conferido aqui
   const caixa = [area.sul, area.oeste, area.norte, area.leste].map((n) => n.toFixed(5)).join(',');
-  // Por aqui quase ninguém cadastra a trilha como rota: também vale caminho com nome de trilha.
-  // Os calçados ficam de fora (passarela de concreto chamada "Travessia" não é trilha)
+  // Quase ninguém cadastra rota por aqui: vale caminho com nome de trilha, menos os calçados
   const nome =
     '["name"~"^(trilha|caminho|travessia|picada)",i]["surface"!~"^(asphalt|concrete|concrete:plates|paving_stones|sett)$"]';
-  // Valor exato em cada tipo usa o índice do servidor (regex no valor não usa): 36 s -> 27 s em JF.
-  // "qt" devolve sem ordenar, que é mais rápido
+  // Valor exato usa o índice do servidor (regex não usa); "qt" devolve sem ordenar, mais rápido
   const consulta = `[out:json][timeout:40][bbox:${caixa}];
 (
   relation["route"="hiking"];

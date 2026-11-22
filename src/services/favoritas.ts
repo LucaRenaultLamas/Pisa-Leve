@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import type { Trilha } from '@/services/trilhas';
 
-// Guarda a trilha inteira: a aba Favoritas abre sem internet
+// Guarda a trilha inteira: as favoritas abrem sem internet
 const chave = (usuario: string) => `@pisa-leve/favoritas/${usuario}`;
 
 export async function lerFavoritas(usuario: string): Promise<Trilha[]> {

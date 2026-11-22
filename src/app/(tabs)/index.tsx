@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -14,11 +13,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AvisoErro } from '@/components/AvisoErro';
 import { BarraFiltros, type CampoFiltro, type FiltroAplicado } from '@/components/BarraFiltros';
 import { Botao } from '@/components/Botao';
+import { Carregando } from '@/components/Carregando';
 import { CarrosselLento } from '@/components/CarrosselLento';
 import { CartaoAvistamento } from '@/components/CartaoAvistamento';
 import { Icone } from '@/components/Icone';
 import { MapaAvistamentos } from '@/components/MapaAvistamentos';
 import { PopupAvistamentos } from '@/components/PopupAvistamentos';
+import { PopupSobre } from '@/components/PopupSobre';
 import { gruposDeAlergias } from '@/constants/alergias';
 import { PINS, TAXONS_POR_ALERGIA, taxonsDasAlergias } from '@/constants/animais';
 import { cores, espacos, fontes, raios } from '@/constants/tema';
@@ -36,7 +37,7 @@ import {
   pegarLocalizacaoAtual,
   type Coordenadas,
 } from '@/services/localizacao';
-import { distanciaKm } from '@/utils/geo';
+import { diaLocal, distanciaKm } from '@/utils/geo';
 
 const RAIOS_KM = [2, 5, 10, 20, 40, 80];
 // "Ampliar o raio" dobra até aqui; mais que isso a lista de 80 recentes já não representa a área
@@ -121,23 +122,7 @@ function passaNoFiltro(a: Avistamento, f: FiltroAplicado) {
     const tem = f.valores.some((v) => (v === 'peconhento' ? a.peconhento : a.alergia));
     return f.operador === 'nenhum' ? !tem : tem;
   }
-  if (f.campo === 'quando') {
-    if (!a.data) return false;
-    if (f.valores[0] === 'mes') {
-      // Data local, não UTC: dia 30 às 22h no Brasil já é o mês seguinte em UTC
-      const hoje = new Date();
-      const mes = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}`;
-      return a.data.startsWith(mes);
-    }
-    const dias = (Date.now() - new Date(`${a.data.slice(0, 10)}T12:00:00`).getTime()) / 86_400_000;
-    return dias <= Number(f.valores[0]);
-  }
   return true;
-}
-
-// Data local "AAAA-MM-DD" (toISOString é UTC e erra o dia à noite no Brasil)
-function diaLocal(d: Date) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 // O "Quando" vai pra própria busca: total do mapa, aviso e lista contam o mesmo período
@@ -174,6 +159,7 @@ export default function Explorar() {
   const [nomeLugar, setNomeLugar] = useState<string | null>(null);
   const [filtros, setFiltros] = useState<FiltroAplicado[]>(FILTROS_INICIAIS);
   const [popupTodos, setPopupTodos] = useState(false);
+  const [sobreAberto, setSobreAberto] = useState(false);
 
   const [dados, setDados] = useState<ResultadoAvistamentos | null>(null);
   const [carregando, setCarregando] = useState(false);
@@ -214,6 +200,7 @@ export default function Explorar() {
 
   useEffect(() => {
     localizar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const centro = local.tipo === 'pronto' ? local.centro : null;
@@ -319,6 +306,14 @@ export default function Explorar() {
             </Text>
             <Text style={estilos.subtitulo}>Fique atento ao que está por perto</Text>
           </View>
+          <Pressable
+            onPress={() => setSobreAberto(true)}
+            accessibilityRole="button"
+            accessibilityLabel="Sobre o projeto"
+            hitSlop={8}
+            style={({ pressed }) => [estilos.info, pressed && { opacity: 0.7 }]}>
+            <Icone nome="info" cor={cores.primaria} tamanho={24} />
+          </Pressable>
         </View>
 
         {local.tipo === 'erro' ? (
@@ -346,11 +341,11 @@ export default function Explorar() {
                   onAbrir={abrir}
                 />
               ) : (
-                <Carregando texto="Procurando sua localização…" />
+                <CarregandoComTexto texto="Procurando sua localização…" />
               )}
               {centro && carregando && (
                 <View style={estilos.mapaCobertura}>
-                  <Carregando texto="Buscando avistamentos…" />
+                  <CarregandoComTexto texto="Buscando avistamentos…" />
                 </View>
               )}
               {dados && !carregando && (
@@ -464,14 +459,15 @@ export default function Explorar() {
         onAbrir={abrir}
         onFechar={() => setPopupTodos(false)}
       />
+      <PopupSobre visivel={sobreAberto} onFechar={() => setSobreAberto(false)} />
     </SafeAreaView>
   );
 }
 
-function Carregando({ texto }: { texto: string }) {
+function CarregandoComTexto({ texto }: { texto: string }) {
   return (
     <View style={estilos.carregando} accessibilityRole="progressbar" accessibilityLabel={texto}>
-      <ActivityIndicator color={cores.primaria} />
+      <Carregando />
       <Text style={estilos.carregandoTexto}>{texto}</Text>
     </View>
   );
@@ -496,6 +492,14 @@ const estilos = StyleSheet.create({
   titulos: {
     flex: 1,
     gap: 4,
+  },
+  info: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: cores.selecionado,
   },
   marca: {
     fontFamily: fontes.monoNegrito,

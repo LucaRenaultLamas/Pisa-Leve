@@ -6,7 +6,6 @@ import { buscarMunicipio, buscarTrilhasNaRegiao, type TrilhaNaRegiao } from '@/s
 import { areaEmVolta, dentroDaArea, type Area } from '@/services/trilhas';
 import { distanciaKm } from '@/utils/geo';
 
-// v3: cidades achadas a partir das trilhas (antes: vizinhas do iNaturalist conferidas uma a uma)
 const CHAVE_SALVAS = '@pisa-leve/cidades-com-trilhas-v3';
 const VALIDADE_MS = 7 * 24 * 60 * 60 * 1000;
 const MUDOU_LUGAR_KM = 5;
@@ -110,8 +109,7 @@ let emAndamento: {
   parciais: Cidade[];
 } | null = null;
 
-// As `quantas` cidades mais perto de você que têm trilha mapeada. Procura trilhas numa região
-// que vai crescendo e vê de que município é cada uma. aoAchar recebe a lista a cada cidade nova
+// Acha trilhas numa região que cresce e agrupa por município; aoAchar recebe cada cidade nova
 export function buscarCidadesComTrilhas(
   ponto: Coordenadas,
   quantas = 5,

@@ -24,7 +24,7 @@ export const cores = {
   mapaFundo: '#E4EEDF',
   fotoVazia: '#C9D9C3',
   voceAqui: '#2F7BD8',
-  // Risco por trecho (mockup de Trilhas)
+  // Risco por trecho
   riscoBaixo: '#2E8B57',
   riscoMedio: '#E3A21A',
   riscoAlto: '#B4271C',

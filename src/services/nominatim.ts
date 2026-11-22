@@ -4,8 +4,7 @@ import type { Coordenadas } from '@/services/localizacao';
 import { pontoMaisPerto, type Area, type Trilha } from '@/services/trilhas';
 import { distanciaKm } from '@/utils/geo';
 
-// Busca por nome no OpenStreetMap: ~0,3 s por termo, contra 25-90 s da Overpass (20/11).
-// Não acha rotas cadastradas como relação nem traz tudo: serve pra lista aparecer logo
+// Rápida, mas parcial (não acha rotas): serve pra lista aparecer antes da Overpass
 const API = 'https://nominatim.openstreetmap.org/search';
 const TERMOS = ['trilha', 'travessia', 'caminho', 'picada'];
 const ESPERA_ENTRE_MS = 1_100; // regra do Nominatim: no máximo 1 pedido por segundo
@@ -36,8 +35,7 @@ type ResultadoApi = {
 
 const esperar = (ms: number) => new Promise((resolver) => setTimeout(resolver, ms));
 
-// Todos os pedidos do app passam por esta fila. Busca de trilhas (alta) passa na frente
-// da conferência de cidades (baixa), que pode somar dezenas de pedidos
+// Fila única do app: busca de trilhas (alta) passa na frente da procura de cidades (baixa)
 type Prioridade = 'alta' | 'baixa';
 const filas: Record<Prioridade, (() => Promise<void>)[]> = { alta: [], baixa: [] };
 let andando = false;

@@ -77,8 +77,7 @@ export function buscarTrilhas(alvo: AlvoBusca, comRapida: boolean): BuscaTrilhas
   return busca;
 }
 
-// Ao abrir o app: busca as trilhas perto, o risco das mais próximas e as cidades vizinhas
-// com trilha, sem tela esperando
+// Ao abrir o app: trilhas perto, risco das mais próximas e cidades com trilha, sem tela esperando
 export async function preCarregarTrilhas(taxonsAlergia: number[]) {
   let voce: Coordenadas;
   try {

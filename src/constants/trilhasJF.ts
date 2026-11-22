@@ -13,8 +13,7 @@ export type TrilhaJF = {
   comprimentoKm: number | null;
 };
 
-// O OpenStreetMap quase não tem trilhas de JF. Textos da Tribuna de Minas, UFJF e
-// Prefeitura; coordenadas do próprio OSM (Nominatim), conferidas em 20/11/2026
+// O OSM quase não tem trilhas de JF. Fontes: Tribuna de Minas, UFJF, Prefeitura e Nominatim
 export const TRILHAS_JF: TrilhaJF[] = [
   {
     id: 'jf-cristo',
